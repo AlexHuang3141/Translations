@@ -81,7 +81,7 @@ document.querySelectorAll(".module").forEach(module => {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "en-US";
-    utterance.rate = 0.8;
+    utterance.rate = 0.85;
 
     // Disable Next while audio plays
     nextBtn.disabled = true;
