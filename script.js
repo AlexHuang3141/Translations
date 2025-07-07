@@ -1,11 +1,11 @@
  const allTranslations = {
    start: [
-     { english: "Can I have your license?", chinese: "我可以看一下你的驾照吗？" },
+     { english: "Can I have your license", chinese: "我可以看一下你的驾照吗？" },
      { english: "Please verify your name and date of birth", chinese: "请核对您的姓名和出生日期。" },
      { english: "Please start your vehicle", chinese: "请启动您的车辆。" },
      { english: "We're going to start with a quick vehicle check.", chinese: "我们先做一个简短的车辆检查。" },
-     { english: "Can you please turn on your left signal?", chinese: "你能打开左转灯吗？" },
-     { english: "Can you please turn on your right signal?", chinese: "你能打开右转向灯吗？" },
+     { english: "Can you please turn on your left signal", chinese: "你能打开左转灯吗？" },
+     { english: "Can you please turn on your right signal", chinese: "你能打开右转向灯吗？" },
      { english: "Press your brake on and off", chinese: "踩下和松开刹车。" },
      { english: "Press the horn, please", chinese: "请按喇叭。" }
    ],
@@ -81,7 +81,7 @@ document.querySelectorAll(".module").forEach(module => {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "en-US";
-    utterance.rate = 0.65;
+    utterance.rate = 0.8;
 
     // Disable Next while audio plays
     nextBtn.disabled = true;
