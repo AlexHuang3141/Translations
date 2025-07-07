@@ -75,23 +75,52 @@ document.querySelectorAll(".module").forEach(module => {
     playAudio(item.english);
   }
 
-  function playAudio(text) {
-    if (!text) return;
+ let selectedVoice = null;
 
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    utterance.rate = 1.0;
+function loadVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return;
 
-    // Disable Next while audio plays
-    nextBtn.disabled = true;
+  // Try to select a preferred voice
+  selectedVoice = voices.find(v => 
+    v.name.includes("Google US English") || 
+    v.name.includes("Microsoft David") || 
+    (v.lang === "en-US")
+  );
 
-    utterance.onend = () => {
-      nextBtn.disabled = false;
-    };
-
-    speechSynthesis.speak(utterance);
+  // If no preferred voice found, just pick the first English one
+  if (!selectedVoice) {
+    selectedVoice = voices.find(v => v.lang.startsWith("en"));
   }
+}
+
+// Make sure voices are loaded
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.onvoiceschanged = loadVoice;
+  loadVoice(); // Initial try in case voices already loaded
+}
+
+function playAudio(text) {
+  if (!text) return;
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  utterance.rate = 1.0;
+
+  if (selectedVoice) {
+    utterance.voice = selectedVoice;
+  }
+
+  nextBtn.disabled = true;
+
+  utterance.onend = () => {
+    nextBtn.disabled = false;
+  };
+
+  speechSynthesis.speak(utterance);
+}
+
 
   // Event: Start
   startBtn.addEventListener("click", () => {
