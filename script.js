@@ -38,28 +38,32 @@ const allTranslations = {
 
 let selectedVoice = null;
 
-// Load and select a good English voice
 function loadVoice() {
   const voices = window.speechSynthesis.getVoices();
 
   selectedVoice = voices.find(v =>
-    v.name.includes("Google US English") ||
-    v.name.includes("Microsoft David") ||
-    v.name.includes("Samantha") ||
+    v.name.includes("Alex") ||                    // iOS/macOS
+    v.name.includes("Google US English") ||       // Chrome
+    v.name.includes("Microsoft David") ||         // Windows
     v.lang === "en-US"
   );
 
   if (!selectedVoice) {
-    selectedVoice = voices.find(v => v.lang.startsWith("en"));
+    selectedVoice = voices.find(v =>
+      v.lang.startsWith("en") &&
+      !v.name.includes("Ting") &&
+      !v.name.includes("Mei") &&
+      !v.name.includes("Liang")
+    );
   }
 
   console.log("Voice selected:", selectedVoice ? selectedVoice.name : "None");
 }
 
-// Wait for voices to be available
+// 🧠 Add this part:
 if (typeof speechSynthesis !== 'undefined') {
   speechSynthesis.onvoiceschanged = loadVoice;
-  loadVoice(); // in case they're already loaded
+  loadVoice();
 }
 
 // Now generate the interface
