@@ -81,21 +81,22 @@ let selectedVoice = null;
 function loadVoice() {
   const voices = window.speechSynthesis.getVoices();
 
-  // Pick specific high-quality voices if available
+  // Try to pick platform-optimized voices
   selectedVoice = voices.find(v =>
-    v.name.includes("Google US English") || // Chrome
-    v.name.includes("Microsoft David") ||   // Windows
-    v.name.includes("Samantha") ||          // macOS/iOS
+    v.name.includes("Google US English") || // Best for Chrome (Windows/Android)
+    v.name.includes("Microsoft David") ||   // Best for Edge/Windows
+    v.name.includes("Samantha") ||          // Best for iOS/macOS
     v.lang === "en-US"
   );
 
-  // Fallback: pick first available English voice
+  // Fallback: pick first English voice
   if (!selectedVoice) {
     selectedVoice = voices.find(v => v.lang.startsWith("en"));
   }
 
   console.log("Voice selected:", selectedVoice ? selectedVoice.name : "None");
 }
+
 
 // Wait for voices to load
 if (typeof speechSynthesis !== 'undefined') {
