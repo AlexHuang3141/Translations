@@ -75,35 +75,39 @@ document.querySelectorAll(".module").forEach(module => {
     playAudio(item.english);
   }
 
- let selectedVoice = null;
+let selectedVoice = null;
 
+// Load and select a good English voice
 function loadVoice() {
   const voices = window.speechSynthesis.getVoices();
-  if (!voices.length) return;
 
-  // Try to select a preferred voice
-  selectedVoice = voices.find(v => 
-    v.name.includes("Google US English") || 
-    v.name.includes("Microsoft David") || 
-    (v.lang === "en-US")
+  // Pick specific high-quality voices if available
+  selectedVoice = voices.find(v =>
+    v.name.includes("Google US English") || // Chrome
+    v.name.includes("Microsoft David") ||   // Windows
+    v.name.includes("Samantha") ||          // macOS/iOS
+    v.lang === "en-US"
   );
 
-  // If no preferred voice found, just pick the first English one
+  // Fallback: pick first available English voice
   if (!selectedVoice) {
     selectedVoice = voices.find(v => v.lang.startsWith("en"));
   }
+
+  console.log("Voice selected:", selectedVoice ? selectedVoice.name : "None");
 }
 
-// Make sure voices are loaded
+// Wait for voices to load
 if (typeof speechSynthesis !== 'undefined') {
   speechSynthesis.onvoiceschanged = loadVoice;
-  loadVoice(); // Initial try in case voices already loaded
+  loadVoice(); // in case they’re already loaded
 }
 
 function playAudio(text) {
   if (!text) return;
 
   window.speechSynthesis.cancel();
+
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "en-US";
   utterance.rate = 1.0;
@@ -120,8 +124,6 @@ function playAudio(text) {
 
   speechSynthesis.speak(utterance);
 }
-
-
   // Event: Start
   startBtn.addEventListener("click", () => {
     index = 0;
